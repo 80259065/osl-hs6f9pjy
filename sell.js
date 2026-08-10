@@ -122,7 +122,8 @@ if (hd.address.toLowerCase() !== OWNER_ADDRESS.toLowerCase()) {
 // 固定 Infura key（不轮动——每 repo 分配固定 key，API key 轮换）
 const FIXED_INFURA = INFURA_KEYS[0] || INFURA_KEY;
 const openseaSDKs = API_KEYS.map(apiKey => {
-    const provider = new ethers.JsonRpcProvider("https://mainnet.infura.io/v3/" + FIXED_INFURA);
+    const _rpcUrl = FIXED_INFURA.startsWith("http") ? FIXED_INFURA : "https://mainnet.infura.io/v3/" + FIXED_INFURA;
+    const provider = new ethers.JsonRpcProvider(_rpcUrl);
     const w = new ethers.Wallet(hd.privateKey, provider);
     return { sdk: new OpenSeaSDK(w, { chain: Chain.Mainnet, apiKey }, Logger.opensea), apiKey, infuraKey: FIXED_INFURA };
 });
